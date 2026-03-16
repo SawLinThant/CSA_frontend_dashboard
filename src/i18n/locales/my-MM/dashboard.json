@@ -1,0 +1,9 @@
+{
+  "title": "Overview (MM)",
+  "cards": {
+    "totalRevenue": "Total revenue",
+    "activeFarmers": "Active farmers",
+    "pendingOrders": "Pending orders"
+  }
+}
+

@@ -1,0 +1,13 @@
+{
+  "appName": "Farming Admin",
+  "loading": "Loading...",
+  "logout": "Log out",
+  "language": "Language",
+  "nav": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "orders": "Orders",
+    "settings": "Settings"
+  }
+}
+
