@@ -1,8 +1,8 @@
 import { lazy, Suspense } from 'react'
 import { Route, Routes, Navigate } from 'react-router-dom'
-import { AppShell } from '../../components/layout/AppShell'
 import { ProtectedRoute } from './protected'
 import { useTranslation } from 'react-i18next'
+import { AdminLayout } from '@/components/layout/AdminLayout'
 
 const DashboardPage = lazy(
   () => import('../../features/dashboard/pages/DashboardPage'),
@@ -31,9 +31,9 @@ export function AppRoutes() {
           path="/"
           element={
             <ProtectedRoute>
-              <AppShell>
+              <AdminLayout>
                 <DashboardPage />
-              </AppShell>
+              </AdminLayout>
             </ProtectedRoute>
           }
         />
@@ -41,9 +41,9 @@ export function AppRoutes() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <AppShell>
+              <AdminLayout>
                 <DashboardPage />
-              </AppShell>
+              </AdminLayout>
             </ProtectedRoute>
           }
         />
@@ -51,9 +51,9 @@ export function AppRoutes() {
           path="/products"
           element={
             <ProtectedRoute>
-              <AppShell>
+              <AdminLayout>
                 <ProductsListPage />
-              </AppShell>
+              </AdminLayout>
             </ProtectedRoute>
           }
         />

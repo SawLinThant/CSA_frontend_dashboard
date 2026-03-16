@@ -1,6 +1,7 @@
 export const routes = {
   auth: {
-    adminLogin: '/admin/login',
+    adminLogin: '/auth/admin/login',
+    logout: '/auth/logout',
   },
   dashboard: '/dashboard',
   products: '/products',

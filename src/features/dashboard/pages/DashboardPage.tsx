@@ -1,51 +1,20 @@
-import { useTranslation } from 'react-i18next'
+//import { ChartAreaInteractive } from "@/components/chart-area-interactive"
+import { DataTable } from "@/components/data-table"
+import { SectionCards } from "@/components/section-cards"
+import data from "@/app/dashboard/data.json"
 
 export default function DashboardPage() {
-  const { t } = useTranslation('dashboard')
-
   return (
-    <div className="space-y-6">
-      <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-slate-50">
-          {t('title')}
-        </h1>
-      </header>
-      <section className="grid gap-4 md:grid-cols-3">
-        <DashboardCard
-          label={t('cards.totalRevenue')}
-          value="$120,430"
-          trend="+14.3% vs last month"
-        />
-        <DashboardCard
-          label={t('cards.activeFarmers')}
-          value="312"
-          trend="+32 new this week"
-        />
-        <DashboardCard
-          label={t('cards.pendingOrders')}
-          value="27"
-          trend="Most from wholesale partners"
-        />
-      </section>
+    <div className="@container/main flex flex-1 flex-col gap-4 py-4">
+      <SectionCards />
+      {/* <div className="grid grid-cols-1 gap-4 px-4 lg:px-6 @4xl/main:grid-cols-2">
+        <ChartAreaInteractive />
+        <div className="hidden @4xl/main:block" />
+      </div> */}
+      <div className="flex flex-col gap-4">
+        <DataTable data={data} />
+      </div>
     </div>
-  )
-}
-
-interface DashboardCardProps {
-  label: string
-  value: string
-  trend: string
-}
-
-function DashboardCard({ label, value, trend }: DashboardCardProps) {
-  return (
-    <article className="rounded-xl border border-slate-800 bg-slate-900/60 p-4 shadow-sm">
-      <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
-        {label}
-      </p>
-      <p className="mt-2 text-2xl font-semibold text-slate-50">{value}</p>
-      <p className="mt-1 text-xs text-emerald-400">{trend}</p>
-    </article>
   )
 }
 

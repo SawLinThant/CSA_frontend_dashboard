@@ -2,8 +2,9 @@ import { useAppSelector } from '../store/hooks'
 
 export function useAuth() {
   const user = useAppSelector((state) => state.auth.user)
-  const token = useAppSelector((state) => state.auth.token)
+  const accessToken = useAppSelector((state) => state.auth.accessToken)
+  const refreshToken = useAppSelector((state) => state.auth.refreshToken)
 
-  return { user, token }
+  return { user, accessToken, refreshToken }
 }
 
