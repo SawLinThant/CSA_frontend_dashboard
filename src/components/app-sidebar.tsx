@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { NavDocuments } from "@/components/nav-documents"
+//import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/nav-main"
 import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
@@ -15,7 +15,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { LayoutDashboardIcon, ListIcon, ChartBarIcon, FolderIcon, UsersIcon, CameraIcon, FileTextIcon, Settings2Icon, CircleHelpIcon, SearchIcon, DatabaseIcon, FileChartColumnIcon, FileIcon, CommandIcon } from "lucide-react"
+import { LayoutDashboardIcon, FolderIcon, UsersIcon, CameraIcon, FileTextIcon, Settings2Icon, CircleHelpIcon, DatabaseIcon, FileChartColumnIcon, FileIcon, CommandIcon, ListIcon, BoxIcon } from "lucide-react"
+import { NavInventory } from "@/components/nav-inventory"
 
 const data = {
   user: {
@@ -26,48 +27,67 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "#",
+      url: "/dashboard",
       icon: (
         <LayoutDashboardIcon
         />
       ),
     },
     {
-      title: "Lifecycle",
-      url: "#",
+      title: "Customers",
+      url: "/customers",
+      icon: (
+        <UsersIcon
+        />
+      ),
+    },
+    {
+      title: "Farmers",
+      url: "/farmers",
+      icon: (
+        <UsersIcon
+        />
+      ),
+    },
+    {
+      title: "Categories",
+      url: "/categories",
       icon: (
         <ListIcon
         />
       ),
     },
     {
-      title: "Analytics",
-      url: "#",
-      icon: (
-        <ChartBarIcon
-        />
-      ),
-    },
-    {
-      title: "Projects",
-      url: "#",
+      title: "Products",
+      url: "/products",
       icon: (
         <FolderIcon
         />
       ),
     },
+  
+  ],
+  navInventory: [
     {
-      title: "Team",
+      title: "Inventory",
       url: "#",
       icon: (
-        <UsersIcon
+        <BoxIcon
         />
       ),
     },
+    {
+      title: "Harvests",
+      url: "/harvests",
+      icon: (
+        <BoxIcon
+        />
+      ),
+    }
   ],
   navClouds: [
     {
-      title: "Capture",
+      title: "Orders",
       icon: (
         <CameraIcon
         />
@@ -86,7 +106,7 @@ const data = {
       ],
     },
     {
-      title: "Proposal",
+      title: "Subscriptions",
       icon: (
         <FileTextIcon
         />
@@ -104,7 +124,7 @@ const data = {
       ],
     },
     {
-      title: "Prompts",
+      title: "Payments",
       icon: (
         <FileTextIcon
         />
@@ -112,11 +132,11 @@ const data = {
       url: "#",
       items: [
         {
-          title: "Active Proposals",
+          title: "Active Payments",
           url: "#",
         },
         {
-          title: "Archived",
+          title: "Archived Payments",
           url: "#",
         },
       ],
@@ -139,14 +159,14 @@ const data = {
         />
       ),
     },
-    {
-      title: "Search",
-      url: "#",
-      icon: (
-        <SearchIcon
-        />
-      ),
-    },
+    // {
+    //   title: "Search",
+    //   url: "#",
+    //   icon: (
+    //     <SearchIcon
+    //     />
+    //   ),
+    // },
   ],
   documents: [
     {
@@ -186,14 +206,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               render={<a href="#" />}
             >
               <CommandIcon className="size-5!" />
-              <span className="text-base font-semibold">Acme Inc.</span>
+              <span className="text-base font-semibold">CSA Dashboard</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
+        <NavInventory items={data.navInventory} />
+        {/* <NavDocuments items={data.documents} /> */}
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>

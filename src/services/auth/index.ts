@@ -39,7 +39,7 @@ export async function refreshAccessToken(
   refreshToken: string,
 ): Promise<RefreshTokenResponse> {
   const response = await httpClient.post<{ refreshToken: string }, RefreshTokenResponse>(
-    '/refresh',
+    '/auth/refresh',
     { refreshToken },
   )
 
