@@ -20,6 +20,17 @@ export interface ListProductsResponse {
   limit: number
 }
 
+export async function listProductsAuthed(params: {
+  page: number
+  limit: number
+  name?: string
+  categoryId?: string
+  isActive?: boolean
+}): Promise<ListProductsResponse> {
+  // Products are public in backend; we reuse the same implementation.
+  return await listProducts(params)
+}
+
 export async function listProducts(params: {
   page: number
   limit: number

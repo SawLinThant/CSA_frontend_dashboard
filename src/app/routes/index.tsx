@@ -19,6 +19,18 @@ const FarmersListPage = lazy(
 const CategoriesListPage = lazy(
   () => import('../../features/categories/pages/CategoriesListPage'),
 )
+const BoxesListPage = lazy(
+  () => import('../../features/boxes/pages/BoxesListPage'),
+)
+const BoxVersionsListPage = lazy(
+  () => import('../../features/boxVersions/pages/BoxVersionsListPage'),
+)
+const BoxItemsPage = lazy(
+  () => import('../../features/boxItems/pages/BoxItemsPage'),
+)
+const SubscriptionsPage = lazy(
+  () => import('../../features/subscriptions/pages/SubscriptionsPage'),
+)
 const LoginPage = lazy(
   () => import('../../features/auth/pages/LoginPage'),
 )
@@ -92,6 +104,46 @@ export function AppRoutes() {
             <ProtectedRoute>
               <AdminLayout>
                 <CategoriesListPage />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/boxes"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <BoxesListPage />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/box-versions"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <BoxVersionsListPage />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/box-items"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <BoxItemsPage />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/subscriptions"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <SubscriptionsPage />
               </AdminLayout>
             </ProtectedRoute>
           }

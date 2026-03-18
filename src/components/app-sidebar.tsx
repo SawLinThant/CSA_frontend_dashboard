@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/sidebar"
 import { LayoutDashboardIcon, FolderIcon, UsersIcon, CameraIcon, FileTextIcon, Settings2Icon, CircleHelpIcon, DatabaseIcon, FileChartColumnIcon, FileIcon, CommandIcon, ListIcon, BoxIcon } from "lucide-react"
 import { NavInventory } from "@/components/nav-inventory"
+import { NavAdmin } from "./nav-admin"
 
 const data = {
   user: {
@@ -69,8 +70,24 @@ const data = {
   ],
   navInventory: [
     {
-      title: "Inventory",
-      url: "#",
+      title: "Boxes",
+      url: "/boxes",
+      icon: (
+        <BoxIcon
+        />
+      ),
+    },
+    {
+      title: "Box Versions",
+      url: "/box-versions",
+      icon: (
+        <BoxIcon
+        />
+      ),
+    },
+    {
+      title: "Box Items",
+      url: "/box-items",
       icon: (
         <BoxIcon
         />
@@ -84,6 +101,16 @@ const data = {
         />
       ),
     }
+  ],
+  navAdmin: [
+    {
+      title: "Subscriptions",
+      url: "/subscriptions",
+      icon: (
+        <FileTextIcon
+        />
+      ),
+    },
   ],
   navClouds: [
     {
@@ -214,6 +241,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={data.navMain} />
         <NavInventory items={data.navInventory} />
+        <NavAdmin items={data.navAdmin} />
         {/* <NavDocuments items={data.documents} /> */}
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
