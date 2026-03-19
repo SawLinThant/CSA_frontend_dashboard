@@ -1,3 +1,6 @@
+"use client"
+
+import * as React from "react"
 import { Badge } from "@/components/ui/badge"
 import {
   Card,
@@ -8,31 +11,84 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { TrendingUpIcon, TrendingDownIcon } from "lucide-react"
+import { authedGetJson } from "@/services/http/authedFetch"
+
+type AnalyticsSummary = {
+  totalRevenue: number
+  newCustomers: number
+  activeAccounts: number
+  growthRate: number
+}
 
 export function SectionCards() {
+  const [summary, setSummary] = React.useState<AnalyticsSummary | null>(null)
+  const [loading, setLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    let cancelled = false
+
+    async function load() {
+      try {
+        const data = await authedGetJson<AnalyticsSummary>(
+          "/auth/admin/analytics/summary",
+        )
+        if (!cancelled) setSummary(data)
+      } catch {
+        // Keep UI stable even if analytics fails to load.
+        if (!cancelled) setSummary(null)
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    }
+
+    load()
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const currencyFmt = React.useMemo(
+    () => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }),
+    [],
+  )
+  const numberFmt = React.useMemo(() => new Intl.NumberFormat("en-US"), [])
+
+  const hasSummary = summary !== null
+  const growthRate = hasSummary ? summary.growthRate : 0
+  const growthIsPositive = hasSummary ? growthRate >= 0 : true
+  const growthRounded = hasSummary ? Number(growthRate.toFixed(1)) : 0
+  const growthText = `${growthIsPositive ? "+" : ""}${growthRounded}%`
+
   return (
     <div className="grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4 dark:*:data-[slot=card]:bg-card">
       <Card className="@container/card">
         <CardHeader>
           <CardDescription>Total Revenue</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            $1,250.00
+            {loading ? "—" : hasSummary ? currencyFmt.format(summary.totalRevenue) : "—"}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
-              <TrendingUpIcon
-              />
-              +12.5%
-            </Badge>
+            {loading ? (
+              <Badge variant="outline">Loading</Badge>
+            ) : (
+              hasSummary ? (
+                <Badge variant="outline">
+                  {growthIsPositive ? <TrendingUpIcon /> : <TrendingDownIcon />}
+                  {growthText}
+                </Badge>
+              ) : (
+                <Badge variant="outline">N/A</Badge>
+              )
+            )}
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Trending up this month{" "}
-            <TrendingUpIcon className="size-4" />
+            Growth vs previous 30 days{" "}
+            {hasSummary && (growthIsPositive ? <TrendingUpIcon className="size-4" /> : <TrendingDownIcon className="size-4" />)}
           </div>
           <div className="text-muted-foreground">
-            Visitors for the last 6 months
+            Revenue (successful payments)
           </div>
         </CardFooter>
       </Card>
@@ -40,23 +96,25 @@ export function SectionCards() {
         <CardHeader>
           <CardDescription>New Customers</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            1,234
+            {loading ? "—" : hasSummary ? numberFmt.format(summary.newCustomers) : "—"}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
-              <TrendingDownIcon
-              />
-              -20%
-            </Badge>
+            {loading ? (
+              <Badge variant="outline">Loading</Badge>
+            ) : hasSummary ? (
+              <Badge variant="outline">Last 30 days</Badge>
+            ) : (
+              <Badge variant="outline">N/A</Badge>
+            )}
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Down 20% this period{" "}
-            <TrendingDownIcon className="size-4" />
+            Customer acquisition in the last 30 days{" "}
+            {hasSummary ? <TrendingUpIcon className="size-4" /> : null}
           </div>
           <div className="text-muted-foreground">
-            Acquisition needs attention
+            Customers registered as role `customer`
           </div>
         </CardFooter>
       </Card>
@@ -64,42 +122,51 @@ export function SectionCards() {
         <CardHeader>
           <CardDescription>Active Accounts</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            45,678
+            {loading ? "—" : hasSummary ? numberFmt.format(summary.activeAccounts) : "—"}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
-              <TrendingUpIcon
-              />
-              +12.5%
-            </Badge>
+            {loading ? (
+              <Badge variant="outline">Loading</Badge>
+            ) : hasSummary ? (
+              <Badge variant="outline">Currently active</Badge>
+            ) : (
+              <Badge variant="outline">N/A</Badge>
+            )}
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Strong user retention{" "}
-            <TrendingUpIcon className="size-4" />
+            Users with status `active`{" "}
+            {hasSummary ? <TrendingUpIcon className="size-4" /> : null}
           </div>
-          <div className="text-muted-foreground">Engagement exceed targets</div>
+          <div className="text-muted-foreground">Account availability</div>
         </CardFooter>
       </Card>
       <Card className="@container/card">
         <CardHeader>
           <CardDescription>Growth Rate</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            4.5%
+            {loading ? "—" : hasSummary ? `${growthRounded}%` : "—"}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
-              <TrendingUpIcon
-              />
-              +4.5%
-            </Badge>
+            {loading ? (
+              <Badge variant="outline">Loading</Badge>
+            ) : (
+              hasSummary ? (
+                <Badge variant="outline">
+                  {growthIsPositive ? <TrendingUpIcon /> : <TrendingDownIcon />}
+                  {growthText}
+                </Badge>
+              ) : (
+                <Badge variant="outline">N/A</Badge>
+              )
+            )}
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Steady performance increase{" "}
-            <TrendingUpIcon className="size-4" />
+            Revenue growth vs previous 30 days{" "}
+            {hasSummary && (growthIsPositive ? <TrendingUpIcon className="size-4" /> : <TrendingDownIcon className="size-4" />)}
           </div>
           <div className="text-muted-foreground">Meets growth projections</div>
         </CardFooter>

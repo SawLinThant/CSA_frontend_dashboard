@@ -31,6 +31,9 @@ const BoxItemsPage = lazy(
 const SubscriptionsPage = lazy(
   () => import('../../features/subscriptions/pages/SubscriptionsPage'),
 )
+const HarvestsPage = lazy(
+  () => import('../../features/harvests/pages/HarvestsPage'),
+)
 const LoginPage = lazy(
   () => import('../../features/auth/pages/LoginPage'),
 )
@@ -144,6 +147,16 @@ export function AppRoutes() {
             <ProtectedRoute>
               <AdminLayout>
                 <SubscriptionsPage />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/harvests"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <HarvestsPage />
               </AdminLayout>
             </ProtectedRoute>
           }
