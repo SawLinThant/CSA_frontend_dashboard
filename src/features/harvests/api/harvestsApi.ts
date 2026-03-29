@@ -5,7 +5,9 @@ export type HarvestStatus = "pending" | "approved" | "rejected"
 export interface HarvestItem {
   id: string
   farmerId: string
+  farmerName?: string | null
   productId: string
+  productName?: string | null
   quantityAvailable: number
   unitPrice: number
   harvestDate: string

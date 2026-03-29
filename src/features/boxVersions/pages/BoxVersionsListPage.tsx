@@ -3,7 +3,7 @@ import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { PaginatedTable, type ColumnDef } from "@/components/common/PaginatedTable"
 import type { BoxVersionListItem } from "@/features/boxVersions/api/boxVersionsApi"
-import { deleteBoxVersion, listBoxVersions } from "@/features/boxVersions/api/boxVersionsApi"
+import { deleteBoxVersion, listBoxVersions, recomputeBoxVersionCapacityForStartDate } from "@/features/boxVersions/api/boxVersionsApi"
 import { BoxVersionUpsertDialog } from "@/features/boxVersions/components/BoxVersionUpsertDialog"
 import {
   AlertDialog,
@@ -39,6 +39,19 @@ export default function BoxVersionsListPage() {
         className: "text-right w-[140px] text-xs text-muted-foreground",
         cell: (r) => (
           <div className="flex items-center justify-end gap-2">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => {
+                void recomputeBoxVersionCapacityForStartDate(r)
+                  .then(() => {
+                    toast.success("Capacity recomputed")
+                  })
+                  .catch((e) => toast.error(e instanceof Error ? e.message : "Recompute failed"))
+              }}
+            >
+              Recompute
+            </Button>
             <Button
               variant="outline"
               size="sm"

@@ -100,6 +100,14 @@ const data = {
         <BoxIcon
         />
       ),
+    },
+    {
+      title: "Capacity",
+      url: "/capacity",
+      icon: (
+        <BoxIcon
+        />
+      ),
     }
   ],
   navAdmin: [
@@ -108,6 +116,14 @@ const data = {
       url: "/subscriptions",
       icon: (
         <FileTextIcon
+        />
+      ),
+    },
+    {
+      title: "Order Ops",
+      url: "/order-ops",
+      icon: (
+        <FileChartColumnIcon
         />
       ),
     },

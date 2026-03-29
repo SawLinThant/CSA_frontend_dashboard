@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
 
 import { PaginatedTable, type ColumnDef } from "@/components/common/PaginatedTable"
@@ -10,12 +10,54 @@ import {
   rejectHarvest,
   type HarvestItem,
 } from "../api/harvestsApi"
+import { listProductsAuthed } from "@/features/products/api/listProducts"
+import { listFarmers } from "@/features/farmers/api/listFarmers"
 
 function formatDate(value?: string | null) {
   if (!value) return "-"
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return "-"
   return date.toLocaleDateString()
+}
+
+function formatMMK(value: number) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "MMK",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(value)
+}
+
+async function fetchAllProductNames(): Promise<Record<string, string>> {
+  const map: Record<string, string> = {}
+  const limit = 200
+
+  async function pull(isActive: boolean) {
+    let page = 1
+    while (true) {
+      const res = await listProductsAuthed({ page, limit, isActive })
+      for (const p of res.items) map[p.id] = p.name
+      if (res.items.length < limit || page * limit >= res.total) break
+      page += 1
+    }
+  }
+
+  await Promise.all([pull(true), pull(false)])
+  return map
+}
+
+async function fetchAllFarmerNames(): Promise<Record<string, string>> {
+  const map: Record<string, string> = {}
+  const limit = 200
+  let page = 1
+  while (true) {
+    const res = await listFarmers({ page, limit })
+    for (const f of res.items) map[f.id] = f.user.name
+    if (res.items.length < limit || page * limit >= res.total) break
+    page += 1
+  }
+  return map
 }
 
 function StatusBadge({ status }: { status: HarvestItem["status"] }) {
@@ -37,6 +79,28 @@ export default function HarvestsPage() {
   const [refreshToken, setRefreshToken] = useState(0)
   const [loadingApproveId, setLoadingApproveId] = useState<string | null>(null)
   const [loadingRejectId, setLoadingRejectId] = useState<string | null>(null)
+  const [productNameById, setProductNameById] = useState<Record<string, string>>({})
+  const [farmerNameById, setFarmerNameById] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    void fetchAllProductNames()
+      .then((map) => {
+        setProductNameById(map)
+      })
+      .catch(() => {
+        setProductNameById({})
+      })
+  }, [])
+
+  useEffect(() => {
+    void fetchAllFarmerNames()
+      .then((map) => {
+        setFarmerNameById(map)
+      })
+      .catch(() => {
+        setFarmerNameById({})
+      })
+  }, [])
 
   const columns: ColumnDef<HarvestItem>[] = useMemo(
     () => [
@@ -48,14 +112,14 @@ export default function HarvestsPage() {
       },
       {
         key: "farmerId",
-        header: "Farmer ID",
-        cell: (row: HarvestItem) => row.farmerId,
+        header: "Farmer",
+        cell: (row: HarvestItem) => row.farmerName ?? farmerNameById[row.farmerId] ?? row.farmerId,
         className: "w-[140px] text-xs text-muted-foreground"
       },
       {
         key: "productId",
-        header: "Product ID",
-        cell: (row: HarvestItem) => row.productId,
+        header: "Product",
+        cell: (row: HarvestItem) => row.productName ?? productNameById[row.productId] ?? row.productId,
         className: "w-[140px] text-xs text-muted-foreground"
       },
       {
@@ -67,7 +131,7 @@ export default function HarvestsPage() {
       {
         key: "unitPrice",
         header: "Unit Price",
-        cell: (row: HarvestItem) => `$${row.unitPrice.toFixed(2)}`,
+        cell: (row: HarvestItem) => formatMMK(row.unitPrice),
         className: "w-[140px] text-xs text-muted-foreground"
       },
       {
@@ -145,7 +209,7 @@ export default function HarvestsPage() {
         },
       },
     ],
-    [loadingApproveId, loadingRejectId],
+    [loadingApproveId, loadingRejectId, farmerNameById, productNameById],
   )
 
   return (

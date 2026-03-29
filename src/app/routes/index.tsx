@@ -34,6 +34,12 @@ const SubscriptionsPage = lazy(
 const HarvestsPage = lazy(
   () => import('../../features/harvests/pages/HarvestsPage'),
 )
+const CapacityPage = lazy(
+  () => import('../../features/capacity/pages/CapacityPage'),
+)
+const OrderOpsPage = lazy(
+  () => import('../../features/orderOps/pages/OrderOpsPage'),
+)
 const LoginPage = lazy(
   () => import('../../features/auth/pages/LoginPage'),
 )
@@ -157,6 +163,26 @@ export function AppRoutes() {
             <ProtectedRoute>
               <AdminLayout>
                 <HarvestsPage />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/capacity"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <CapacityPage />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/order-ops"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <OrderOpsPage />
               </AdminLayout>
             </ProtectedRoute>
           }

@@ -1,4 +1,5 @@
 import { authedDelete, authedGetJson, authedPatchJson, authedPostJson } from "@/services/http/authedFetch"
+import { recomputeBoxVersionCapacity } from "@/features/capacity/api/capacityApi"
 
 export interface BoxVersionListItem {
   id: string
@@ -70,5 +71,10 @@ export async function updateBoxVersion(
 
 export async function deleteBoxVersion(id: string): Promise<void> {
   await authedDelete(`/auth/admin/box-versions/${id}`)
+}
+
+export async function recomputeBoxVersionCapacityForStartDate(version: Pick<BoxVersionListItem, "id" | "startDate">) {
+  const cycleDate = version.startDate.slice(0, 10)
+  return await recomputeBoxVersionCapacity(version.id, cycleDate)
 }
 

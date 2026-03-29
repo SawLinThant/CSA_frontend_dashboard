@@ -45,7 +45,7 @@ export function SubscriptionPlanUpsertDialog(props: {
 
   useEffect(() => {
     if (!props.open) return
-    void listBoxes({ page: 1, limit: 100 })
+    void listBoxes({ page: 1, limit: 100, isActive: true })
       .then((res) => setBoxes(res.items))
       .catch(() => setBoxes([]))
   }, [props.open])
