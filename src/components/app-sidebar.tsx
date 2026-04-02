@@ -120,6 +120,14 @@ const data = {
       ),
     },
     {
+      title: "Orders",
+      url: "/orders",
+      icon: (
+        <FileTextIcon
+        />
+      ),
+    },
+    {
       title: "Order Ops",
       url: "/order-ops",
       icon: (

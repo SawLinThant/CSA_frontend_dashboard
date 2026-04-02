@@ -40,6 +40,12 @@ const CapacityPage = lazy(
 const OrderOpsPage = lazy(
   () => import('../../features/orderOps/pages/OrderOpsPage'),
 )
+const OrdersPage = lazy(
+  () => import('../../features/orders/pages/OrdersPage'),
+)
+const OrderDetailPage = lazy(
+  () => import('../../features/orders/pages/OrderDetailPage'),
+)
 const LoginPage = lazy(
   () => import('../../features/auth/pages/LoginPage'),
 )
@@ -183,6 +189,26 @@ export function AppRoutes() {
             <ProtectedRoute>
               <AdminLayout>
                 <OrderOpsPage />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <OrdersPage />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/orders/:id"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <OrderDetailPage />
               </AdminLayout>
             </ProtectedRoute>
           }
