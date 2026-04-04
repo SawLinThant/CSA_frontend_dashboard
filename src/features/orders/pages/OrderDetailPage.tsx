@@ -34,6 +34,18 @@ function orderStatusLabel(status: AdminOrderDetail["status"]) {
   return status
 }
 
+function addressLines(a: AdminOrderDetail["customer"]["user"]["addresses"][number]) {
+  return [a.addressLine, `${a.city}, ${a.state} ${a.postalCode}`, a.country]
+}
+
+/** One row for the UI: default when several saved; sole address when only one. */
+function pickCustomerAddress(order: AdminOrderDetail) {
+  const list = order.customer.user.addresses ?? []
+  if (list.length === 0) return null
+  if (list.length === 1) return list[0]
+  return list.find((a) => a.isDefault) ?? list[0]
+}
+
 function computeDelayReason(order: AdminOrderDetail): string | null {
   const targetIso = order.deliveryDate ?? order.cycleDate
   if (!targetIso) return null
@@ -111,6 +123,8 @@ export default function OrderDetailPage() {
       </div>
     )
   }
+
+  const customerAddress = pickCustomerAddress(order)
 
   async function refresh() {
     if (!id) return
@@ -259,6 +273,23 @@ export default function OrderDetailPage() {
           </CardContent>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-sm text-muted-foreground">Customer address</CardTitle>
+        </CardHeader>
+        <CardContent className="text-sm text-muted-foreground">
+          {customerAddress ? (
+            <div className="rounded-md border border-border/60 bg-muted/20 px-3 py-2">
+              <div className="whitespace-pre-line text-foreground/90">
+                {addressLines(customerAddress).join("\n")}
+              </div>
+            </div>
+          ) : (
+            <p>No address on file for this customer.</p>
+          )}
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

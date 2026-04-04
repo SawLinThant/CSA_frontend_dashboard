@@ -3,6 +3,16 @@ import { authedGetJson, authedPatchJson, type PaginatedResult } from "@/services
 export type OrderStatus = "pending" | "packed" | "shipped" | "delivered" | "cancelled"
 export type DeliveryStatus = "scheduled" | "out_for_delivery" | "delivered" | "failed"
 
+export interface AdminCustomerAddress {
+  id: string
+  addressLine: string
+  city: string
+  state: string
+  postalCode: string
+  country: string
+  isDefault: boolean
+}
+
 export interface AdminOrderListItem {
   id: string
   status: OrderStatus
@@ -82,6 +92,7 @@ export interface AdminOrderDetail extends Omit<AdminOrderListItem, "boxVersion" 
       email: string | null
       name: string
       phone: string
+      addresses: AdminCustomerAddress[]
     }
   }
   delivery: {
