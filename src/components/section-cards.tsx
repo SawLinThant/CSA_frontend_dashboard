@@ -48,7 +48,7 @@ export function SectionCards() {
   }, [])
 
   const currencyFmt = React.useMemo(
-    () => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }),
+    () => new Intl.NumberFormat("en-US", { style: "currency", currency: "MMK" }),
     [],
   )
   const numberFmt = React.useMemo(() => new Intl.NumberFormat("en-US"), [])

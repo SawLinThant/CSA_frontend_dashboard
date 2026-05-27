@@ -116,10 +116,11 @@ export function loadAuthSession(): {
 }
 
 export async function logoutApi(): Promise<void> {
+  const { refreshToken } = loadTokens()
   try {
-    await httpClient.post<undefined, { message: string }>(
+    await httpClient.post<{ refreshToken: string }, { message: string }>(
       routes.auth.logout,
-      undefined as unknown as undefined,
+      { refreshToken: refreshToken ?? '' },
     )
   } catch {
     // ignore network/logout API errors; client logout is still effective

@@ -263,7 +263,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain
+          items={data.navMain}
+          searchItems={[...data.navMain, ...data.navInventory, ...data.navAdmin]}
+        />
         <NavInventory items={data.navInventory} />
         <NavAdmin items={data.navAdmin} />
         {/* <NavDocuments items={data.documents} /> */}

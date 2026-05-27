@@ -11,7 +11,7 @@ export default function CustomersListPage() {
   }, [])
 
   const columns: ColumnDef<CustomerListItem>[] = [
-    { key: "id", header: "ID", cell: (r) => r.id, className: "w-[140px] text-xs text-muted-foreground" },
+    { key: "id", header: "ID", cell: (_r: CustomerListItem, idx?: number) => (idx ?? 0) + 1, className: "w-[60px] text-xs text-muted-foreground text-center" },
     { key: "name", header: "Name", cell: (r) => r.user.name , className: "w-[140px] text-xs text-muted-foreground" },
     { key: "phone", header: "Phone", cell: (r) => r.user.phone , className: "w-[140px] text-xs text-muted-foreground" },
     { key: "email", header: "Email", cell: (r) => r.user.email ?? "-" , className: "w-[140px] text-xs text-muted-foreground" },

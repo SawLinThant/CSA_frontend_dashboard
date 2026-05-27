@@ -111,11 +111,11 @@ export function PaginatedTable<T>({
                 </TableCell>
               </TableRow>
             ) : data?.items?.length ? (
-              data.items.map((row) => (
+              data.items.map((row, rowIndex) => (
                 <TableRow key={rowKey(row)}>
                   {columns.map((col) => (
                     <TableCell key={col.key} className={col.className}>
-                      {col.cell(row)}
+                      {col.cell(row, (page - 1) * limit + rowIndex)}
                     </TableCell>
                   ))}
                 </TableRow>

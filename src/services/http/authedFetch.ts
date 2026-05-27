@@ -1,6 +1,14 @@
 import { env } from "@/config/env"
 import type { ApiErrorPayload } from "@/types/api"
-import { loadTokens, persistTokens, refreshAccessToken } from "@/services/auth"
+import { loadTokens, persistTokens, refreshAccessToken, persistAuthSession } from "@/services/auth"
+import { store } from "@/store"
+import { logout } from "@/features/auth/store/authSlice"
+
+function forceLogout() {
+  persistAuthSession(null, null, null)
+  store.dispatch(logout())
+  window.location.replace('/login')
+}
 
 export interface PaginatedResult<T> {
   items: T[]
@@ -68,9 +76,17 @@ export async function authedGetJson<T>(
   if (response.status === 401) {
     const { refreshToken } = loadTokens()
     if (refreshToken) {
-      const refreshed = await refreshAccessToken(refreshToken)
-      persistTokens(refreshed.accessToken, refreshed.refreshToken ?? refreshToken)
-      response = await requestOnce("GET", path, { query })
+      try {
+        const refreshed = await refreshAccessToken(refreshToken)
+        persistTokens(refreshed.accessToken, refreshed.refreshToken ?? refreshToken)
+        response = await requestOnce("GET", path, { query })
+      } catch {
+        forceLogout()
+        throw new Error('Session expired. Please log in again.')
+      }
+    } else {
+      forceLogout()
+      throw new Error('Session expired. Please log in again.')
     }
   }
 
@@ -93,9 +109,17 @@ export async function authedPostJson<TResponse>(
   if (response.status === 401) {
     const { refreshToken } = loadTokens()
     if (refreshToken) {
-      const refreshed = await refreshAccessToken(refreshToken)
-      persistTokens(refreshed.accessToken, refreshed.refreshToken ?? refreshToken)
-      response = await requestOnce("POST", path, { body })
+      try {
+        const refreshed = await refreshAccessToken(refreshToken)
+        persistTokens(refreshed.accessToken, refreshed.refreshToken ?? refreshToken)
+        response = await requestOnce("POST", path, { body })
+      } catch {
+        forceLogout()
+        throw new Error('Session expired. Please log in again.')
+      }
+    } else {
+      forceLogout()
+      throw new Error('Session expired. Please log in again.')
     }
   }
 
@@ -118,9 +142,17 @@ export async function authedPatchJson<TResponse>(
   if (response.status === 401) {
     const { refreshToken } = loadTokens()
     if (refreshToken) {
-      const refreshed = await refreshAccessToken(refreshToken)
-      persistTokens(refreshed.accessToken, refreshed.refreshToken ?? refreshToken)
-      response = await requestOnce("PATCH", path, { body })
+      try {
+        const refreshed = await refreshAccessToken(refreshToken)
+        persistTokens(refreshed.accessToken, refreshed.refreshToken ?? refreshToken)
+        response = await requestOnce("PATCH", path, { body })
+      } catch {
+        forceLogout()
+        throw new Error('Session expired. Please log in again.')
+      }
+    } else {
+      forceLogout()
+      throw new Error('Session expired. Please log in again.')
     }
   }
 
@@ -142,9 +174,17 @@ export async function authedDelete(
   if (response.status === 401) {
     const { refreshToken } = loadTokens()
     if (refreshToken) {
-      const refreshed = await refreshAccessToken(refreshToken)
-      persistTokens(refreshed.accessToken, refreshed.refreshToken ?? refreshToken)
-      response = await requestOnce("DELETE", path)
+      try {
+        const refreshed = await refreshAccessToken(refreshToken)
+        persistTokens(refreshed.accessToken, refreshed.refreshToken ?? refreshToken)
+        response = await requestOnce("DELETE", path)
+      } catch {
+        forceLogout()
+        throw new Error('Session expired. Please log in again.')
+      }
+    } else {
+      forceLogout()
+      throw new Error('Session expired. Please log in again.')
     }
   }
 
@@ -163,9 +203,17 @@ export async function authedPostFormData<TResponse>(
   if (response.status === 401) {
     const { refreshToken } = loadTokens()
     if (refreshToken) {
-      const refreshed = await refreshAccessToken(refreshToken)
-      persistTokens(refreshed.accessToken, refreshed.refreshToken ?? refreshToken)
-      response = await requestOnce("POST", path, { formData })
+      try {
+        const refreshed = await refreshAccessToken(refreshToken)
+        persistTokens(refreshed.accessToken, refreshed.refreshToken ?? refreshToken)
+        response = await requestOnce("POST", path, { formData })
+      } catch {
+        forceLogout()
+        throw new Error('Session expired. Please log in again.')
+      }
+    } else {
+      forceLogout()
+      throw new Error('Session expired. Please log in again.')
     }
   }
 
@@ -188,9 +236,17 @@ export async function authedPatchFormData<TResponse>(
   if (response.status === 401) {
     const { refreshToken } = loadTokens()
     if (refreshToken) {
-      const refreshed = await refreshAccessToken(refreshToken)
-      persistTokens(refreshed.accessToken, refreshed.refreshToken ?? refreshToken)
-      response = await requestOnce("PATCH", path, { formData })
+      try {
+        const refreshed = await refreshAccessToken(refreshToken)
+        persistTokens(refreshed.accessToken, refreshed.refreshToken ?? refreshToken)
+        response = await requestOnce("PATCH", path, { formData })
+      } catch {
+        forceLogout()
+        throw new Error('Session expired. Please log in again.')
+      }
+    } else {
+      forceLogout()
+      throw new Error('Session expired. Please log in again.')
     }
   }
 
