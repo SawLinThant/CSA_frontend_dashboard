@@ -20,7 +20,7 @@ export interface PaginatedResponse<T> {
 export interface ColumnDef<T> {
   key: string
   header: string
-  cell: (row: T) => React.ReactNode
+  cell: (row: T, rowIndex?: number) => React.ReactNode
   className?: string
 }
 

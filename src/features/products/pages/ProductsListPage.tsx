@@ -8,7 +8,7 @@ export default function ProductsListPage() {
   }, [])
 
   const columns: ColumnDef<PublicProductListItem>[] = [
-    { key: "id", header: "ID", cell: (r) => r.id, className: "w-[140px] text-xs text-muted-foreground" },
+    { key: "no", header: "No", cell: (_r: PublicProductListItem, idx?: number) => (idx ?? 0) + 1, className: "w-[60px] text-xs text-muted-foreground text-center" },
     { key: "name", header: "Name", cell: (r) => r.name , className: "w-[140px] text-xs text-muted-foreground" },
     { key: "unit", header: "Unit", cell: (r) => r.unit , className: "w-[140px] text-xs text-muted-foreground" },
     { key: "basePrice", header: "Base Price", cell: (r) => r.basePrice , className: "w-[140px] text-xs text-muted-foreground" },

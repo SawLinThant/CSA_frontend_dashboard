@@ -11,7 +11,7 @@ export default function FarmersListPage() {
   }, [])
 
   const columns: ColumnDef<FarmerListItem>[] = [
-    { key: "id", header: "ID", cell: (r) => r.id, className: "w-[140px] text-xs text-muted-foreground" },
+    { key: "no", header: "No", cell: (_r: FarmerListItem, idx?: number) => (idx ?? 0) + 1, className: "w-[60px] text-xs text-muted-foreground text-center" },
     { key: "name", header: "Name", cell: (r) => r.user.name , className: "w-[140px] text-xs text-muted-foreground" },
     { key: "phone", header: "Phone", cell: (r) => r.user.phone , className: "w-[140px] text-xs text-muted-foreground" },
     { key: "farmName", header: "Farm", cell: (r) => r.farmName , className: "w-[140px] text-xs text-muted-foreground" },

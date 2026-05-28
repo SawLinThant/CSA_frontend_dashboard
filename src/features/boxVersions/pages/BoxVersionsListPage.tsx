@@ -29,7 +29,7 @@ export default function BoxVersionsListPage() {
 
   const columns: ColumnDef<BoxVersionListItem>[] = useMemo(
     () => [
-      { key: "id", header: "ID", cell: (r) => r.id, className: "w-[140px] text-xs text-muted-foreground" },
+      { key: "no", header: "No", cell: (_r: BoxVersionListItem, idx?: number) => (idx ?? 0) + 1, className: "w-[60px] text-xs text-muted-foreground text-center" },
       { key: "name", header: "Version", cell: (r) => r.versionName, className: "w-[140px] text-xs text-muted-foreground"},
       { key: "start", header: "Start", cell: (r) => new Date(r.startDate).toLocaleDateString() , className: "w-[140px] text-xs text-muted-foreground"},
       { key: "end", header: "End", cell: (r) => (r.endDate ? new Date(r.endDate).toLocaleDateString() : "-") , className: "w-[140px] text-xs text-muted-foreground"},

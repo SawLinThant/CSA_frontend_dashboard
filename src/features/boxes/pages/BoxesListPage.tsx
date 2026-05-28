@@ -55,6 +55,7 @@ export default function BoxesListPage() {
 
   const columns: ColumnDef<BoxListItem>[] = useMemo(
     () => [
+      { key: "no", header: "No", cell: (_r: BoxListItem, idx?: number) => (idx ?? 0) + 1, className: "w-[60px] text-xs text-muted-foreground text-center" },
       {
         key: "image",
         header: "Image",
