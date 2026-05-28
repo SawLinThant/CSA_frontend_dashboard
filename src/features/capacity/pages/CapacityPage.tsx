@@ -73,7 +73,7 @@ export default function CapacityPage() {
 
   const reservationColumns: ColumnDef<InventoryReservation>[] = useMemo(
     () => [
-      { key: "id", header: "Reservation", cell: (r) => r.id, className: "text-xs text-muted-foreground" },
+      { key: "no", header: "No", cell: (_r: InventoryReservation, idx?: number) => (idx ?? 0) + 1, className: "w-[60px] text-xs text-muted-foreground text-center" },
       { key: "subscriptionId", header: "Subscription", cell: (r) => r.subscriptionId, className: "text-xs text-muted-foreground" },
       { key: "boxVersionId", header: "Box Version", cell: (r) => r.boxVersionId, className: "text-xs text-muted-foreground" },
       { key: "cycleDate", header: "Cycle Date", cell: (r) => new Date(r.cycleDate).toLocaleDateString(), className: "text-xs text-muted-foreground" },

@@ -105,10 +105,10 @@ export default function HarvestsPage() {
   const columns: ColumnDef<HarvestItem>[] = useMemo(
     () => [
       {
-        key: "id",
-        header: "Harvest ID",
-        cell: (row: HarvestItem) => row.id,
-        className: "w-[140px] text-xs text-muted-foreground"
+        key: "no",
+        header: "No",
+        cell: (_row: HarvestItem, idx?: number) => (idx ?? 0) + 1,
+        className: "w-[60px] text-xs text-muted-foreground text-center"
       },
       {
         key: "farmerId",

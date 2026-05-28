@@ -38,7 +38,7 @@ export default function CategoriesListPage() {
 
   const columns: ColumnDef<CategoryListItem>[] = useMemo(
     () => [
-      { key: "id", header: "ID", cell: (r) => r.id, className: "w-[140px] text-xs text-muted-foreground" },
+      { key: "no", header: "No", cell: (_r: CategoryListItem, idx?: number) => (idx ?? 0) + 1, className: "w-[60px] text-xs text-muted-foreground text-center" },
       { key: "name", header: "Name", cell: (r) => r.name, className: "w-[180px] text-xs text-muted-foreground" },
       {
         key: "description",

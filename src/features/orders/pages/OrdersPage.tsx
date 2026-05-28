@@ -70,6 +70,12 @@ export default function OrdersPage() {
   const columns: ColumnDef<AdminOrderListItem>[] = useMemo(
     () => [
       {
+        key: "no",
+        header: "No",
+        cell: (_r: AdminOrderListItem, idx?: number) => (idx ?? 0) + 1,
+        className: "w-[60px] text-xs text-muted-foreground text-center",
+      },
+      {
         key: "id",
         header: "Order",
         cell: (r) => (
@@ -77,10 +83,10 @@ export default function OrdersPage() {
             to={`/orders/${encodeURIComponent(r.id)}`}
             className="text-xs text-muted-foreground underline-offset-2 hover:underline"
           >
-            {r.id}
+            View
           </NavLink>
         ),
-        className: "w-[220px] text-xs",
+        className: "w-[60px] text-xs",
       },
       { key: "customer", header: "Customer", cell: (r) => r.customer.user.email ?? r.customer.user.name, className: "text-xs text-muted-foreground" },
       { key: "box", header: "Box", cell: (r) => r.box.name, className: "text-xs text-muted-foreground" },

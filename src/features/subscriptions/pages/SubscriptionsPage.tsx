@@ -29,7 +29,7 @@ export default function SubscriptionsPage() {
 
   const columns: ColumnDef<SubscriptionPlan>[] = useMemo(
     () => [
-      { key: "id", header: "ID", cell: (r) => r.id, className: "w-[140px] text-xs text-muted-foreground" },
+      { key: "no", header: "No", cell: (_r: SubscriptionPlan, idx?: number) => (idx ?? 0) + 1, className: "w-[60px] text-xs text-muted-foreground text-center" },
       { key: "name", header: "Name", cell: (r) => r.name, className: "w-[140px] text-xs text-muted-foreground" },
       { key: "price", header: "Price", cell: (r) => r.price, className: "w-[140px] text-xs text-muted-foreground" },
       { key: "freq", header: "Frequency", cell: (r) => r.deliveryFrequency, className: "w-[140px] text-xs text-muted-foreground" },

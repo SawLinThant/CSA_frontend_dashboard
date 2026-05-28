@@ -19,13 +19,19 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command"
-import { SearchIcon } from "lucide-react"
+import { SearchIcon, MoreHorizontalIcon } from "lucide-react"
 import { NavLink, useNavigate } from "react-router-dom"
 
 export function NavMain({
   items,
+  searchItems,
 }: {
   items: {
+    title: string
+    url: string
+    icon?: React.ReactNode
+  }[]
+  searchItems?: {
     title: string
     url: string
     icon?: React.ReactNode
@@ -33,12 +39,25 @@ export function NavMain({
 }) {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
+  const [query, setQuery] = useState("")
+  const [expanded, setExpanded] = useState(false)
 
-  const searchable = useMemo(
-    () =>
-      items.filter((item) => item.url && item.url !== "#"),
+  const defaultSearchable = useMemo(
+    () => items.filter((item) => item.url && item.url !== "#"),
     [items],
   )
+
+  const allSearchable = useMemo(
+    () =>
+      (searchItems ?? items).filter(
+        (item) => item.url && item.url !== "#",
+      ),
+    [searchItems, items],
+  )
+
+  const showAll = query.trim() || expanded
+  const displayItems = showAll ? allSearchable : defaultSearchable
+  const hasMore = allSearchable.length > defaultSearchable.length
 
   return (
     <SidebarGroup>
@@ -53,18 +72,34 @@ export function NavMain({
               <SearchIcon/>
               <span>Search</span>
             </SidebarMenuButton>
-            <CommandDialog open={open} onOpenChange={setOpen}>
+            <CommandDialog
+              open={open}
+              onOpenChange={(next) => {
+                setOpen(next)
+                if (!next) {
+                  setQuery("")
+                  setExpanded(false)
+                }
+              }}
+            >
               <Command>
-                <CommandInput placeholder="Search pages..." autoFocus />
+                <CommandInput
+                  placeholder="Search pages..."
+                  autoFocus
+                  value={query}
+                  onValueChange={setQuery}
+                />
                 <CommandList>
                   <CommandEmpty>No results found.</CommandEmpty>
                   <CommandGroup heading="Pages">
-                    {searchable.map((item) => (
+                    {displayItems.map((item) => (
                       <CommandItem
                         key={item.url}
                         value={item.title}
                         onSelect={() => {
                           setOpen(false)
+                          setQuery("")
+                          setExpanded(false)
                           navigate(item.url)
                         }}
                       >
@@ -72,6 +107,16 @@ export function NavMain({
                         <span>{item.title}</span>
                       </CommandItem>
                     ))}
+                    {!showAll && hasMore && (
+                      <CommandItem
+                        key="__see-more__"
+                        value="See more..."
+                        onSelect={() => setExpanded(true)}
+                      >
+                        <MoreHorizontalIcon className="size-4" />
+                        <span className="text-muted-foreground">See more...</span>
+                      </CommandItem>
+                    )}
                   </CommandGroup>
                 </CommandList>
               </Command>

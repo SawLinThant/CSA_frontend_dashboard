@@ -196,7 +196,7 @@ function RegistrationsTable({
             rows.map((r, idx) => (
               <TableRow key={`${r.dayLabel}-${idx}`}>
                 <TableCell className="text-muted-foreground">{r.dayLabel}</TableCell>
-                <TableCell className="text-right font-medium">{r.count}</TableCell>
+                <TableCell className="text-right font-medium text-muted-foreground">{r.count}</TableCell>
               </TableRow>
             ))
           ) : (

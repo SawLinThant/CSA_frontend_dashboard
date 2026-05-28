@@ -92,7 +92,7 @@ export default function BoxItemsPage() {
 
   const columns: ColumnDef<BoxItemListItem>[] = useMemo(
     () => [
-      { key: "id", header: "ID", cell: (r) => r.id, className: "w-[140px] text-xs text-muted-foreground" },
+      { key: "no", header: "No", cell: (_r: BoxItemListItem, idx?: number) => (idx ?? 0) + 1, className: "w-[60px] text-xs text-muted-foreground text-center" },
       {
         key: "productId",
         header: "Product",
